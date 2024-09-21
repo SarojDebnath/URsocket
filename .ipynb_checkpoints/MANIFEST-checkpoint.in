@@ -1,1 +1,1 @@
-include src/URsocket/control_loop_configuration.xml
+include src/URsocket/config.xml

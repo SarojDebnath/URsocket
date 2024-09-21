@@ -108,16 +108,16 @@ class control:
         self.sendscript(cmd,True)
         return self.get_value('output_int_register_24')
     def moveC(self,pose_via,pose_to,a,v,r,mode):
-        cmd=f'def unnamed():\n  movec({pose_via},{pose_to},{a},{v},{r},{mode})\nend\n'
+        cmd=f'def unnamed():\n  movec(p{pose_via},p{pose_to},{a},{v},{r},{mode})\nend\n'
         self.sendscript(cmd,True)
     def moveJ(self,q,a,v,t,r):
         cmd=f'def unnamed():\n  movej({q},{a},{v},{t},{r})\nend\n'
         self.sendscript(cmd,True)
     def moveL(self,pose,a,v,t,r):
-        cmd=f'def unnamed():\n  movel({pose},{a},{v},{t},{r})\nend\n'
+        cmd=f'def unnamed():\n  movel(p{pose},{a},{v},{t},{r})\nend\n'
         self.sendscript(cmd,True)
     def moveP(self,pose,a,v,r):
-        cmd=f'def unnamed():\n  movep({pose},{a},{v},{r})\nend\n'
+        cmd=f'def unnamed():\n  movep(p{pose},{a},{v},{r})\nend\n'
         self.sendscript(cmd,True)
     def servoC(self,pose,a,v,r):
         cmd=f'def unnamed():\n  servoc({pose},{a},{v},{r})\nend\n'
@@ -205,17 +205,13 @@ class control:
         cmd='def unnamed():\n  global var_1=is_steady()\n  write_output_boolean_register(64,var_1)\nend\n'
         self.sendscript(cmd,True)
         return self.get_value('output_bit_register_64')
-    def isSafe(self,pose,qnear):
-        cmd=f'def unnamed():\n  global var_1=is_within_safety_limits({pose},{qnear})\n  write_output_boolean_register(64,var_1)\nend\n'
+    def isSafe(self,pose):
+        cmd=f'def unnamed():\n  global var_1=is_within_safety_limits({pose})\n  write_output_boolean_register(64,var_1)\nend\n'
         self.sendscript(cmd,True)
         return self.get_value('output_bit_register_64')
-    def popup(self,s,title,warning,error,blocking):
-        cmd=f'def unnamed():\n  popup({s},{title},{warning},{error},{blocking})\nend\n'
-        self.sendscript(cmd,False)
     def setGravity(self,d):
         cmd=f'def unnamed():\n  set_gravity({d})\nend\n'
         self.sendscript(cmd,True)
-        
     def setPayload(self,m,CG):
         cmd=f'def unnamed():\n  set_payload({m}, {CG})\nend\n'
         self.sendscript(cmd,True)
@@ -239,30 +235,30 @@ class control:
     #def toolContact(self):
         #pass
     def interpolatepose(self,p_from,p_to,alpha):
-        cmd=f'def unnamed():\n  global var_1=interpolate_pose({p_from}, {p_to}, {alpha})\n  write_output_float_register(24,var_1[0])\n  write_output_float_register(25,var_1[1])\n  write_output_float_register(26,var_1[2])\n  write_output_float_register(27,var_1[3])\n  write_output_float_register(28,var_1[4])\n  write_output_float_register(29,var_1[5])\nend\n'
+        cmd=f'def unnamed():\n  global var_1=interpolate_pose(p{p_from}, p{p_to}, {alpha})\n  write_output_float_register(24,var_1[0])\n  write_output_float_register(25,var_1[1])\n  write_output_float_register(26,var_1[2])\n  write_output_float_register(27,var_1[3])\n  write_output_float_register(28,var_1[4])\n  write_output_float_register(29,var_1[5])\nend\n'
         self.sendscript(cmd,True)
         return self.get_6dvector()
     def pointdist(self,p_from,p_to):
-        cmd=f'def unnamed():\n  var_1=point_dist({p_from}, {p_to})\n  write_output_float_register(30,var_1)\nend\n'
+        cmd=f'def unnamed():\n  var_1=point_dist(p{p_from}, p{p_to})\n  write_output_float_register(30,var_1)\nend\n'
         self.sendscript(cmd,True)
         return self.get_value('output_double_register_30')
     def posedist(self,pfrom,pto):
-        cmd=f'def unnamed():\n  var_1=pose_dist({pfrom}, {pto})\n  write_output_float_register(30,var_1)\nend\n'
+        cmd=f'def unnamed():\n  var_1=pose_dist(p{pfrom}, p{pto})\n  write_output_float_register(30,var_1)\nend\n'
         self.sendscript(cmd,True)
         return self.get_value('output_double_register_30')
     def poseInv(self,p_from):
-        cmd=f'def unnamed():\n  global var_1=pose_inv({p_from})\n  write_output_float_register(24,var_1[0])\n  write_output_float_register(25,var_1[1])\n  write_output_float_register(26,var_1[2])\n  write_output_float_register(27,var_1[3])\n  write_output_float_register(28,var_1[4])\n  write_output_float_register(29,var_1[5])\nend\n'
+        cmd=f'def unnamed():\n  global var_1=pose_inv(p{p_from})\n  write_output_float_register(24,var_1[0])\n  write_output_float_register(25,var_1[1])\n  write_output_float_register(26,var_1[2])\n  write_output_float_register(27,var_1[3])\n  write_output_float_register(28,var_1[4])\n  write_output_float_register(29,var_1[5])\nend\n'
         self.sendscript(cmd,True)
         return self.get_6dvector()
     def poseTrans(self,p_from,p_to):
-        cmd=f'def unnamed():\n  global var_1= pose_trans({p_from}, {p_to})\n  write_output_float_register(24,var_1[0])\n  write_output_float_register(25,var_1[1])\n  write_output_float_register(26,var_1[2])\n  write_output_float_register(27,var_1[3])\n  write_output_float_register(28,var_1[4])\n  write_output_float_register(29,var_1[5])\nend\n'
+        cmd=f'def unnamed():\n  global var_1= pose_trans(p{p_from}, p{p_to})\n  write_output_float_register(24,var_1[0])\n  write_output_float_register(25,var_1[1])\n  write_output_float_register(26,var_1[2])\n  write_output_float_register(27,var_1[3])\n  write_output_float_register(28,var_1[4])\n  write_output_float_register(29,var_1[5])\nend\n'
         self.sendscript(cmd,True)
         return self.get_6dvector()
     def rotTorpy(self,rVec):
         cmd=f'def unnamed():\n  global var_1= rotvec2rpy({rVec})\n  write_output_float_register(24,var_1[0])\n  write_output_float_register(25,var_1[1])\n  write_output_float_register(26,var_1[2])\nend\n'
         self.sendscript(cmd,True)
         return [self.get_value('output_double_register_24'),self.get_value('output_double_register_25'),self.get_value('output_double_register_26')]
-    def rpyTorot(self,rpy_vec):
+    def rpyTorot(self,rpy_vector):
         cmd=f'def unnamed():\n  global var_1= rpy2rotvec({rpy_vector})\n  write_output_float_register(24,var_1[0])\n  write_output_float_register(25,var_1[1])\n  write_output_float_register(26,var_1[2])\nend\n'
         self.sendscript(cmd,True)
         return [self.get_value('output_double_register_24'),self.get_value('output_double_register_25'),self.get_value('output_double_register_26')]
