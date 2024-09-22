@@ -263,7 +263,7 @@ class control:
         self.sendscript(cmd,True)
         return [self.get_value('output_double_register_24'),self.get_value('output_double_register_25'),self.get_value('output_double_register_26')]
     def wrenchTrans(self,Tfrom,Wfrom):
-        cmd=f'def unnamed():\n  global var_1= wrench_trans({Tfrom}, {Wfrom})\n  write_output_float_register(24,var_1[0])\n  write_output_float_register(25,var_1[1])\n  write_output_float_register(26,var_1[2])\n  write_output_float_register(27,var_1[3])\n  write_output_float_register(28,var_1[4])\n  write_output_float_register(29,var_1[5])\nend\n'
+        cmd=f'def unnamed():\n  global var_1= wrench_trans(p{Tfrom}, {Wfrom})\n  write_output_float_register(24,var_1[0])\n  write_output_float_register(25,var_1[1])\n  write_output_float_register(26,var_1[2])\n  write_output_float_register(27,var_1[3])\n  write_output_float_register(28,var_1[4])\n  write_output_float_register(29,var_1[5])\nend\n'
         self.sendscript(cmd,True)
         return self.get_6dvector()
     def getAnalogIOTypes(self): return self.get_value('analog_io_types')
